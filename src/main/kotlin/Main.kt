@@ -3,9 +3,16 @@ package org.example
 
 import org.example.services.Admin
 import org.example.services.SportClub
+import org.example.subscriptions.Subscription
 
 // Запускает программу и предлагает выбор между режимом администратора и пользователя
 fun main() {
+    var subscription: MutableList <Subscription> = mutableListOf(
+        Subscription("silver", "Standart subscription", 2500),
+        Subscription( "gold", "more features subscription", 5000),
+        Subscription("premium", "for the majors", 10000)
+    )
+
     println("1. admin\n 2. user")
     var d = readln()
     if (d=="1")
