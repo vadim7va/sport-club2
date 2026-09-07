@@ -1,14 +1,15 @@
 package org.example.people
 
-import kotlin.Any
+import org.example.subscriptions.Subscription
+
 
 class Client: Person {
 
-    var subscription: String = ""
+    var subscription: Subscription?
     var login: String = ""
     var password: String = ""
 
-    constructor(name: String, age: Int, subscription: String, login: String, password: String) : super(name, age) {
+    constructor(name: String, age: Int, subscription: Subscription?, login: String, password: String) : super(name, age) {
         this.subscription = subscription
         this.login = login
         this.password = password

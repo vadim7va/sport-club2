@@ -1,15 +1,15 @@
 package org.example.services
-
 import org.example.people.Client
+import org.example.subscriptions.Subscription
 import org.example.printMenu
-import kotlin.collections.get
-import kotlin.text.set
+
 
 class Admin{
     var sportClub: SportClub = SportClub()
-    var subs: MutableList<String> = mutableListOf("silver","gold","premium")
+    var subscriptions: MutableList<Subscription> = mutableListOf()
 
-    fun start() {
+    fun start(subscriptions: MutableList<Subscription> ) {
+        this.subscriptions = subscriptions
         while (true) {
             printClients()
             printMenu()
@@ -31,7 +31,7 @@ class Admin{
     }
     fun printSubs() {
         println("Subs:")
-        subs.forEachIndexed { i, sub -> println("${i + 1}: $sub") }
+        subscriptions.forEachIndexed { i, sub -> println("${i + 1}: ${sub.name}") }
     }
 
     fun deleteClient() {
@@ -49,16 +49,21 @@ class Admin{
         val name = readln()
         println("Client age")
         val age = readln().toInt()
+        //TODO Перенести в отдельный метод
+
         println("Choose subscription for client:")
-        subs.forEachIndexed { i, sub -> println("${i + 1}: $sub") }
+        subscriptions.forEachIndexed { i, sub -> println("${i + 1}: ${sub.name}") }
         val subChoice = readln().toIntOrNull()
-        val subscription = if (subChoice != null && subChoice in 1..subs.size) subs[subChoice - 1] else ""
+        val selectedSubscription = if (subChoice != null && subChoice in 1..subscriptions.size) subscriptions[subChoice - 1] else null
+        if (selectedSubscription == null)
+            return
+
         println("Enter the login")
         val login =readln()
         println("Enter the password")
         val password =readln()
         sportClub.clients.add(
-            Client(name, age, subscription, login, password)
+            Client(name, age, selectedSubscription, login, password)
 
 
         )
@@ -83,13 +88,15 @@ class Admin{
             if (newAge != null) {
                 client.age = newAge
             }
-
+                    //TODO Перенести в отдельный метод
             // Добавляем новый ключ для абонемента
             println("Choose subscription for client:")
-            subs.forEachIndexed { i, sub -> println("${i + 1}: $sub") }
+            subscriptions.forEachIndexed { i, sub -> println("${i + 1}: ${sub.name}") }
             val subChoice = readln().toIntOrNull()
-            val subscription = if (subChoice != null && subChoice in 1..subs.size) subs[subChoice - 1] else ""
-            client.subscription = subscription
+            val selectedSubscription= if (subChoice != null && subChoice in 1..subscriptions.size) subscriptions[subChoice - 1] else null
+            if (selectedSubscription == null)
+                return
+            client.subscription = selectedSubscription
 
             // Сохраняем изменения обратно в список клиентов
             sportClub.clients[d - 1] = client

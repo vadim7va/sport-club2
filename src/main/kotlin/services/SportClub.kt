@@ -1,14 +1,15 @@
 package org.example.services
 
 import org.example.people.Client
+import org.example.subscriptions.Subscription
 
 class SportClub {
     var clients: MutableList<Client> = mutableListOf(
 
-        Client("Vitalik", 22, "gold", "Vitalik", "qwerty123"),
-        Client("Petr", 10, "silver", "Petr", "qwerty123"),
+        Client("Vitalik", 22, Subscription("silver", "Standart subscription", 2500), "Vitalik", "qwerty123"),
+        Client("Petr", 10, Subscription("silver", "Standart subscription", 2500), "Petr", "qwerty123"),
     )
-
+    var subscriptions: MutableList<Subscription> = mutableListOf()
     fun register() {
         println("REGISTERING A NEW CLIENT")
 
@@ -28,11 +29,13 @@ class SportClub {
             println("Invalid age. Registration cancelled.")
             return
         }
-     clients.add(Client(name, age, "", login, password ))
+     clients.add(Client(name, age, null, login, password ))
 
 
     }
-    fun go() {
+    fun go(subscriptions: MutableList<Subscription>) {
+
+        this.subscriptions = subscriptions
         println("1.login, 2. Register")
         val d = readln().toIntOrNull()
         if (d == 1 ){
@@ -100,24 +103,20 @@ class SportClub {
 
     fun chooseSubscription(client: Client) {
         println("CHOOSING A SUBSCRIPTION")
-        val subs = listOf("silver", "gold", "premium")
-        val subsDisplay = listOf(
-            "silver - 1500 руб/мес",
-            "gold - 2500 руб/мес",
-            "premium - 4000 руб/мес"
-        )
 
-        subsDisplay.forEachIndexed { index, sub ->
-            println("${index + 1}. $sub")
+
+        subscriptions.forEachIndexed { index, sub ->
+            println("${index + 1}. ${sub.name}")
         }
 
         print("Select a subscription number: ")
         val choice = readln().toIntOrNull()
 
-        if (choice != null && choice in 1..subs.size) {
-            val selectedSub = subs[choice - 1]
+        if (choice != null && choice in 1..subscriptions.size) {
+            val selectedSub = subscriptions[choice - 1]
+
             client.subscription = selectedSub
-            println("You have selected a subscription: ${subsDisplay[choice - 1]}")
+            println("You have selected a subscription: ${subscriptions[choice - 1].name}")
             println("The subscription was successfully issued!")
         } else {
             println("Wrong choice. Try again.")
@@ -129,6 +128,6 @@ class SportClub {
         println("Имя: ${client.name}")
         println("Возраст: ${client.age}")
         println("Логин: ${client.login}")
-        println("Абонемент: ${if (client.subscription.isNotEmpty()) client.subscription else "Не выбран"}")
+        println("Абонемент: ${if (client.subscription != null) client.subscription!!.name else "Не выбран"}")
     }
 }

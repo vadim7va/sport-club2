@@ -7,7 +7,7 @@ import org.example.subscriptions.Subscription
 
 // Запускает программу и предлагает выбор между режимом администратора и пользователя
 fun main() {
-    var subscription: MutableList <Subscription> = mutableListOf(
+    var subscriptions: MutableList <Subscription> = mutableListOf(
         Subscription("silver", "Standart subscription", 2500),
         Subscription( "gold", "more features subscription", 5000),
         Subscription("premium", "for the majors", 10000)
@@ -18,11 +18,11 @@ fun main() {
     if (d=="1")
     {
         var admin: Admin = Admin()
-        admin.start()
+        admin.start(subscriptions)
     }
     else
     {var sportClub: SportClub = SportClub()
-        sportClub.go()
+        sportClub.go(subscriptions)
     }
 }
 
