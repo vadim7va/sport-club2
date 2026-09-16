@@ -31,7 +31,8 @@ class Admin{
     }
     fun printSubs() {
         println("Subs:")
-        subscriptions.forEachIndexed { i, sub -> println("${i + 1}: ${sub.name}") }
+        subscriptions.forEachIndexed { i, sub -> println("${i + 1}: $sub")
+        }
     }
 
     fun deleteClient() {
@@ -51,10 +52,7 @@ class Admin{
         val age = readln().toInt()
         //TODO Перенести в отдельный метод
 
-        println("Choose subscription for client:")
-        subscriptions.forEachIndexed { i, sub -> println("${i + 1}: ${sub.name}") }
-        val subChoice = readln().toIntOrNull()
-        val selectedSubscription = if (subChoice != null && subChoice in 1..subscriptions.size) subscriptions[subChoice - 1] else null
+        val selectedSubscription = chooseSubscription()
         if (selectedSubscription == null)
             return
 
@@ -90,10 +88,7 @@ class Admin{
             }
                     //TODO Перенести в отдельный метод
             // Добавляем новый ключ для абонемента
-            println("Choose subscription for client:")
-            subscriptions.forEachIndexed { i, sub -> println("${i + 1}: ${sub.name}") }
-            val subChoice = readln().toIntOrNull()
-            val selectedSubscription= if (subChoice != null && subChoice in 1..subscriptions.size) subscriptions[subChoice - 1] else null
+            val selectedSubscription = chooseSubscription()
             if (selectedSubscription == null)
                 return
             client.subscription = selectedSubscription
