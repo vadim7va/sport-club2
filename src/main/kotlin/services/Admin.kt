@@ -1,7 +1,7 @@
 package org.example.services
 import org.example.people.Client
 import org.example.subscriptions.Subscription
-import org.example.printMenu
+
 
 
 class Admin{
@@ -18,12 +18,24 @@ class Admin{
                 "1" -> addClient()
                 "2" -> deleteClient()
                 "3" -> editClient()
+                "4" -> setSubscription()
                 else -> println("There is no such menu item")
             }
             println("Do you want to continue as admin? (yes/no)")
             if (readln().lowercase() != "yes") break
         }
     }
+    fun setSubscription() {
+        printClients()
+        println()
+        val clientChoice = readln().toIntOrNull()
+        val selectedClient: Client? = if (clientChoice != null && clientChoice in 1..sportClub.clients.size) sportClub.clients [clientChoice - 1] else null
+        val selectedSubscription: Subscription?= chooseSubscription()
+        selectedClient!!.subscription = selectedSubscription
+
+
+    }
+
     fun printClients() {
         println("Clients:")
         sportClub.clients.forEachIndexed { i, client -> println("${i + 1}: ${client.name}") }
@@ -33,6 +45,19 @@ class Admin{
         println("Subs:")
         subscriptions.forEachIndexed { i, sub -> println("${i + 1}: $sub")
         }
+    }
+
+    // Выводит доступные действия для администратора
+    fun printMenu(){
+        println("Sport club\n1. add client\n2. delete client\n3. edit client\n4. set subscription")
+    }
+
+    fun chooseSubscription (): Subscription?{
+        println("Choose subscription for client:")
+        subscriptions.forEachIndexed { i, sub -> println("${i + 1}: ${sub.name}") }
+        val subChoice = readln().toIntOrNull()
+        val selectedSubscription: Subscription? = if (subChoice != null && subChoice in 1..subscriptions.size) subscriptions[subChoice - 1] else null
+        return selectedSubscription
     }
 
     fun deleteClient() {

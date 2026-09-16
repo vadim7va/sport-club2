@@ -26,7 +26,3 @@ fun main() {
     }
 }
 
-// Выводит доступные действия для администратора
-fun printMenu(){
-    println("Sport club\n1. add client\n2. delete client\n3. edit client")
-}

@@ -11,7 +11,9 @@ class Subscription {
         this.description = description
         this.price = price
     }
-}
     override fun toString(): String {
-    return "$name $description $price"
+        return "$name $description $price"
+    }
 }
+
+
