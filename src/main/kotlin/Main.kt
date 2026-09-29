@@ -31,9 +31,9 @@ fun main() {
         var admin: Admin = Admin()
         admin.start(subscriptions)
     }
-    else
-    {var sportClub: SportClub = SportClub()
-        sportClub.go(subscriptions)
+    else {
+        var sportClub: SportClub = SportClub()
+        sportClub.go(subscriptions, trainers)
     }
 }
 

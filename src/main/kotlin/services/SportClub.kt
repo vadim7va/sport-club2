@@ -1,6 +1,7 @@
 package org.example.services
 
 import org.example.people.Client
+import org.example.people.Trainer
 import org.example.subscriptions.Subscription
 
 class SportClub {
@@ -10,6 +11,7 @@ class SportClub {
         Client("Petr", 10, Subscription("silver", "Standart subscription", 2500), "Petr", "qwerty123"),
     )
     var subscriptions: MutableList<Subscription> = mutableListOf()
+    var trainers: MutableList<Trainer> = mutableListOf()
     fun register() {
         println("REGISTERING A NEW CLIENT")
 
@@ -33,32 +35,32 @@ class SportClub {
 
 
     }
-    fun go(subscriptions: MutableList<Subscription>) {
-
+    fun go(subscriptions: MutableList<Subscription>, trainers: MutableList<Trainer>) {
         this.subscriptions = subscriptions
+        this.trainers = trainers
         println("1.login, 2. Register")
         val d = readln().toIntOrNull()
-        if (d == 1 ){
-            println("Enter the login")
-            val login = readln()
-            println("Enter the password")
-            val password = readln()
-            if (auth(login, password)){
-               val client = clients.find {client -> client.login.equals(login)  }
-                if (client == null){
-                    println("Client is null")
-                return
-                }
-            userMenu(client)
+        when (d) {
+            1 -> {
+                println("Enter the login")
+                val login = readln()
+                println("Enter the password")
+                val password = readln()
+                if (auth(login, password)) {
+                    val client = clients.find { client -> client.login.equals(login) }
+                    if (client == null) {
+                        println("Client is null")
+                        return
+                    }
+                    userMenu(client)
+                } else
+                    println("Auth failed")
+            }
+            2 -> register()
+            else -> println("Wrong choice")
         }
-            else
-                println("Auth failed")
-        } else {
-            register()
-        }
-
-
     }
+
     fun auth(login: String, password: String): Boolean {
         for (client in clients) {
             if (client.login.equals(login) && client.password.equals(password))
@@ -73,16 +75,17 @@ class SportClub {
             println("1. View available subscriptions")
             println("2. Choose a subscription")
             println("3. My profile")
-            println("4. Exit")
+            println("4. List of coaches")
+            println("5. Exit")
             print("Select an action: ")
 
             when (readln()) {
                 "1" -> showSubscriptions()
                 "2" -> chooseSubscription(currentClient)
                 "3" -> showProfile(currentClient)
-                "4" -> {
-                    println("Goodbye!")
-                    return
+                "4" -> showTrainers()
+                "5" -> { println("Goodbye!")
+                return
                 }
                 else -> println("Wrong choice")
             }
@@ -99,6 +102,10 @@ class SportClub {
         subs.forEachIndexed { index, sub ->
             println("${index + 1}. ${sub.second}")
         }
+    }
+    fun showTrainers() {
+        println("Trainers:")
+        trainers.forEachIndexed { i, trainer -> println("${i + 1}: ${trainer.name}") }
     }
 
     fun chooseSubscription(client: Client) {
